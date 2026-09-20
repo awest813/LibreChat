@@ -64,7 +64,7 @@ export const RevokeKeysButton = ({
       <OGDialogTemplate
         showCloseButton={false}
         title={dialogTitle}
-        className="max-w-[450px]"
+        className="max-w-[28.125rem]"
         main={<Label className="text-left text-sm font-medium">{dialogMessage}</Label>}
         selection={{
           selectHandler: onClick,

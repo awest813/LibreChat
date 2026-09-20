@@ -20,7 +20,30 @@
         padding: 0;
         height: 100%;
       }
+      html {
+        font-size: calc(100% * var(--ui-scale, 1));
+      }
     </style>
+    <script>
+      (function () {
+        try {
+          var raw = localStorage.getItem('uiScale');
+          var n = raw ? JSON.parse(raw) : 100;
+          if (typeof n !== 'number' || !isFinite(n)) {
+            n = 100;
+          }
+          if (n < 50) {
+            n = 50;
+          }
+          if (n > 150) {
+            n = 150;
+          }
+          document.documentElement.style.setProperty('--ui-scale', String(n / 100));
+        } catch (e) {
+          document.documentElement.style.setProperty('--ui-scale', '1');
+        }
+      })();
+    </script>
     <script>
       const theme = localStorage.getItem('color-theme');
       const loadingContainerStyle = document.createElement('style');

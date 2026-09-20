@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
-import { SettingsViews, LocalStorageKeys } from 'librechat-data-provider';
+import { SettingsViews, LocalStorageKeys, SettingsTabValues } from 'librechat-data-provider';
 import { atomWithLocalStorage } from '~/store/utils';
+import { UI_SCALE_DEFAULT } from '~/utils/theme';
 import type { TOptionSettings } from '~/common';
 
 // Static atoms without localStorage
@@ -22,6 +23,8 @@ const localStorageAtoms = {
   autoScroll: atomWithLocalStorage('autoScroll', false),
   hideSidePanel: atomWithLocalStorage('hideSidePanel', false),
   fontSize: atomWithLocalStorage('fontSize', 'text-base'),
+  uiScale: atomWithLocalStorage<number>('uiScale', UI_SCALE_DEFAULT),
+  settingsActiveTab: atomWithLocalStorage<string>('settingsActiveTab', SettingsTabValues.GENERAL),
   enableUserMsgMarkdown: atomWithLocalStorage<boolean>(
     LocalStorageKeys.ENABLE_USER_MSG_MARKDOWN,
     true,
@@ -30,7 +33,7 @@ const localStorageAtoms = {
   // Chat settings
   enterToSend: atomWithLocalStorage('enterToSend', true),
   maximizeChatSpace: atomWithLocalStorage('maximizeChatSpace', false),
-  chatDirection: atomWithLocalStorage('chatDirection', 'LTR'),
+  chatDirection: atomWithLocalStorage<'LTR' | 'RTL'>('chatDirection', 'LTR'),
   showCode: atomWithLocalStorage(LocalStorageKeys.SHOW_ANALYSIS_CODE, true),
   saveDrafts: atomWithLocalStorage('saveDrafts', true),
   showScrollButton: atomWithLocalStorage('showScrollButton', true),

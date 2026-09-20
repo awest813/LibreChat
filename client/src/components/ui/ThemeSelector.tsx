@@ -9,10 +9,10 @@ declare global {
 }
 
 const Theme = ({ theme, onChange }: { theme: string; onChange: (value: string) => void }) => {
-  const themeIcons = {
-    system: <Monitor />,
-    dark: <Moon color="white" />,
-    light: <Sun />,
+  const themeIcons: Record<string, React.ReactNode> = {
+    system: <Monitor className="h-5 w-5" aria-hidden="true" />,
+    dark: <Moon className="h-5 w-5" aria-hidden="true" />,
+    light: <Sun className="h-5 w-5" aria-hidden="true" />,
   };
 
   const nextTheme = theme === 'dark' ? 'light' : 'dark';
@@ -31,7 +31,7 @@ const Theme = ({ theme, onChange }: { theme: string; onChange: (value: string) =
 
   return (
     <button
-      className="flex items-center gap-2 rounded-lg p-2 transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+      className="flex items-center gap-2 rounded-lg p-2 text-text-primary transition-colors hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-xheavy"
       aria-label={label}
       aria-keyshortcuts="Ctrl+Shift+T"
       onClick={(e) => {
@@ -45,7 +45,7 @@ const Theme = ({ theme, onChange }: { theme: string; onChange: (value: string) =
         }
       }}
     >
-      {themeIcons[theme]}
+      {themeIcons[theme] ?? themeIcons.system}
     </button>
   );
 };
@@ -82,21 +82,15 @@ const ThemeSelector = ({ returnThemeOnly }: { returnThemeOnly?: boolean }) => {
     }
   }, [announcement]);
 
-  if (returnThemeOnly === true) {
-    return <Theme theme={theme} onChange={changeTheme} />;
-  }
-
   return (
-    <div className="flex flex-col items-center justify-center bg-white pt-6 dark:bg-gray-900 sm:pt-0">
-      <div className="absolute bottom-0 left-0 m-4">
-        <Theme theme={theme} onChange={changeTheme} />
-      </div>
-      {announcement && (
+    <>
+      <Theme theme={theme} onChange={changeTheme} />
+      {!returnThemeOnly && announcement && (
         <div aria-live="polite" className="sr-only">
           {announcement}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

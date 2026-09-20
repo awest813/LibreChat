@@ -1,35 +1,37 @@
 import React from 'react';
+import { AlignLeft, AlignRight } from 'lucide-react';
 import { useRecoilState } from 'recoil';
+import SegmentedControl from '../../Settings/SegmentedControl';
 import { useLocalize } from '~/hooks';
-import { Button } from '~/components';
 import store from '~/store';
 
 const ChatDirection = () => {
   const [direction, setDirection] = useRecoilState(store.chatDirection);
   const localize = useLocalize();
 
-  const toggleChatDirection = () => {
-    setDirection((prev) => (prev === 'LTR' ? 'RTL' : 'LTR'));
-  };
-
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-2">
+    <div className="flex items-center justify-between gap-3">
+      <div className="min-w-0">
         <span id="chat-direction-label">{localize('com_nav_chat_direction')}</span>
       </div>
-      <Button
-        variant="outline"
-        aria-label="Toggle chat direction"
-        onClick={toggleChatDirection}
-        data-testid="chatDirection"
-      >
-        <span aria-hidden="true">{direction.toLowerCase()}</span>
-        <span id="chat-direction-status" className="sr-only">
-          {direction === 'LTR'
-            ? localize('chat_direction_left_to_right')
-            : localize('chat_direction_right_to_left')}
-        </span>
-      </Button>
+      <SegmentedControl
+        value={direction}
+        onChange={setDirection}
+        ariaLabel={localize('com_nav_chat_direction')}
+        testId="chatDirection"
+        options={[
+          {
+            value: 'LTR',
+            label: localize('chat_direction_left_to_right'),
+            icon: <AlignLeft className="h-3.5 w-3.5" aria-hidden="true" />,
+          },
+          {
+            value: 'RTL',
+            label: localize('chat_direction_right_to_left'),
+            icon: <AlignRight className="h-3.5 w-3.5" aria-hidden="true" />,
+          },
+        ]}
+      />
     </div>
   );
 };

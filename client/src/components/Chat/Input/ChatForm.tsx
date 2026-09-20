@@ -278,7 +278,7 @@ const ChatForm = memo(({ index = 0 }: { index?: number }) => {
                   }}
                   onBlur={setIsTextAreaFocused.bind(null, false)}
                   onClick={handleFocusOrClick}
-                  style={{ height: 44, overflowY: 'auto' }}
+                  style={{ height: '2.75rem', overflowY: 'auto' }}
                   className={cn(
                     baseClasses,
                     removeFocusRings,
