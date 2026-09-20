@@ -2,7 +2,7 @@
 // source: https://plainenglish.io/blog/light-and-dark-mode-in-react-web-application-with-tailwind-css-89674496b942
 import { useSetRecoilState } from 'recoil';
 import React, { createContext, useState, useEffect } from 'react';
-import { getInitialTheme, applyFontSize } from '~/utils';
+import { getInitialTheme, applyFontSize, applyUiScale, readStoredUiScale } from '~/utils';
 import store from '~/store';
 
 type ProviderValue = {
@@ -29,6 +29,7 @@ export const ThemeContext = createContext<ProviderValue>(defaultContextValue);
 export const ThemeProvider = ({ initialTheme, children }) => {
   const [theme, setTheme] = useState(getInitialTheme);
   const setFontSize = useSetRecoilState(store.fontSize);
+  const setUiScale = useSetRecoilState(store.uiScale);
 
   const rawSetTheme = (rawTheme: string) => {
     const root = window.document.documentElement;
@@ -59,14 +60,18 @@ export const ThemeProvider = ({ initialTheme, children }) => {
       setFontSize('text-base');
       applyFontSize('text-base');
       localStorage.setItem('fontSize', JSON.stringify('text-base'));
-      return;
+    } else {
+      try {
+        applyFontSize(JSON.parse(fontSize));
+      } catch (error) {
+        console.log(error);
+      }
     }
-    try {
-      applyFontSize(JSON.parse(fontSize));
-    } catch (error) {
-      console.log(error);
-    }
-    // Reason: This effect should only run once, and `setFontSize` is a stable function
+
+    const storedScale = readStoredUiScale();
+    setUiScale(storedScale);
+    applyUiScale(storedScale);
+    // Reason: This effect should only run once, and Recoil setters are stable
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

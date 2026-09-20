@@ -19,7 +19,7 @@ export default function MobileNav({
   const { title = 'New Chat' } = conversation || {};
 
   return (
-    <div className="bg-token-main-surface-primary sticky top-0 z-10 flex min-h-[40px] items-center justify-center bg-white pl-1 dark:bg-gray-800 dark:text-white md:hidden">
+    <div className="sticky top-0 z-10 flex min-h-10 items-center justify-center bg-header-primary pl-1 text-text-primary md:hidden">
       <button
         type="button"
         data-testid="mobile-header-new-chat-button"
@@ -34,12 +34,10 @@ export default function MobileNav({
       >
         <span className="sr-only">{localize('com_nav_open_sidebar')}</span>
         <svg
-          width="24"
-          height="24"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="icon-md"
+          className="icon-md h-6 w-6"
         >
           <path
             fillRule="evenodd"
@@ -66,12 +64,10 @@ export default function MobileNav({
         }}
       >
         <svg
-          width="24"
-          height="24"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="icon-md"
+          className="icon-md h-6 w-6"
         >
           <path
             fillRule="evenodd"

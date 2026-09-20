@@ -135,13 +135,13 @@ function Avatar() {
         <span>{localize('com_nav_profile_picture')}</span>
         <OGDialogTrigger ref={openButtonRef}>
           <Button variant="outline">
-            <FileImage className="mr-2 flex w-[22px] items-center stroke-1" />
+            <FileImage className="mr-2 flex w-[1.375rem] items-center stroke-1" />
             <span>{localize('com_nav_change_picture')}</span>
           </Button>
         </OGDialogTrigger>
       </div>
 
-      <OGDialogContent className="w-11/12 max-w-sm" style={{ borderRadius: '12px' }}>
+      <OGDialogContent className="w-11/12 max-w-sm rounded-xl">
         <OGDialogHeader>
           <OGDialogTitle className="text-lg font-medium leading-6 text-text-primary">
             {image != null ? localize('com_ui_preview') : localize('com_ui_upload_image')}

@@ -48,8 +48,10 @@
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
+  --ui-scale: 1;
 }
 html {
+  font-size: calc(100% * var(--ui-scale, 1));
   --presentation: var(--white);
   --text-primary: var(--gray-800);
   --text-secondary: var(--gray-600);

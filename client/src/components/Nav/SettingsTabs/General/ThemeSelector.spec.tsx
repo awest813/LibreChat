@@ -1,59 +1,46 @@
-// ThemeSelector.spec.tsx
 import 'test/matchMedia.mock';
 
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { ThemeSelector } from './General';
 import { RecoilRoot } from 'recoil';
 
 describe('ThemeSelector', () => {
-  let mockOnChange;
+  let mockOnChange: jest.Mock;
 
   beforeEach(() => {
     mockOnChange = jest.fn();
   });
 
-  it('renders correctly', () => {
-    global.ResizeObserver = class MockedResizeObserver {
-      observe = jest.fn();
-      unobserve = jest.fn();
-      disconnect = jest.fn();
-    };
-    const { getByText, getByRole } = render(
+  const renderSelector = (theme = 'system') =>
+    render(
       <RecoilRoot>
-        <ThemeSelector theme="system" onChange={mockOnChange} />
+        <ThemeSelector theme={theme} onChange={mockOnChange} />
       </RecoilRoot>,
     );
 
+  it('renders a segmented control with the current theme selected', () => {
+    const { getByText, getByRole, getByTestId } = renderSelector();
+
     expect(getByText('Theme')).toBeInTheDocument();
-    const dropdownButton = getByRole('combobox');
-    expect(dropdownButton).toHaveTextContent('System');
+    expect(getByTestId('theme-selector')).toHaveAttribute('role', 'radiogroup');
+    expect(getByRole('radio', { name: 'System' })).toHaveAttribute('aria-checked', 'true');
+    expect(getByRole('radio', { name: 'Light' })).toHaveAttribute('aria-checked', 'false');
+    expect(getByRole('radio', { name: 'Dark' })).toHaveAttribute('aria-checked', 'false');
   });
 
-  it('calls onChange when the select value changes', async () => {
-    global.ResizeObserver = class MockedResizeObserver {
-      observe = jest.fn();
-      unobserve = jest.fn();
-      disconnect = jest.fn();
-    };
-    const { getByText, getByTestId } = render(
-      <RecoilRoot>
-        <ThemeSelector theme="system" onChange={mockOnChange} />
-      </RecoilRoot>,
-    );
+  it('calls onChange when another theme is selected', () => {
+    const { getByRole } = renderSelector();
 
-    expect(getByText('Theme')).toBeInTheDocument();
+    fireEvent.click(getByRole('radio', { name: 'Dark' }));
+    expect(mockOnChange).toHaveBeenCalledWith('dark');
+  });
 
-    const dropdownButton = getByTestId('theme-selector');
+  it('moves between options with arrow keys', () => {
+    const { getByTestId } = renderSelector('light');
 
-    fireEvent.click(dropdownButton);
-
-    const darkOption = getByText('Dark');
-    fireEvent.click(darkOption);
-
-    await waitFor(() => {
-      expect(mockOnChange).toHaveBeenCalledWith('dark');
-    });
+    fireEvent.keyDown(getByTestId('theme-selector'), { key: 'ArrowRight' });
+    expect(mockOnChange).toHaveBeenCalledWith('dark');
   });
 });

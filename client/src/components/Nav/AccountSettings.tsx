@@ -32,45 +32,29 @@ function AccountSettings() {
         data-testid="nav-user"
         className="mt-text-sm flex h-auto w-full items-center gap-2 rounded-xl p-2 text-sm transition-all duration-200 ease-in-out hover:bg-surface-hover"
       >
-        <div className="-ml-0.9 -mt-0.8 h-8 w-8 flex-shrink-0">
+        <div className="h-8 w-8 flex-shrink-0">
           <div className="relative flex">
             {avatarSeed.length === 0 ? (
               <div
-                style={{
-                  backgroundColor: 'rgb(121, 137, 255)',
-                  width: '32px',
-                  height: '32px',
-                  boxShadow: 'rgba(240, 246, 252, 0.1) 0px 0px 0px 1px',
-                }}
-                className="relative flex items-center justify-center rounded-full p-1 text-text-primary"
+                className="relative flex h-8 w-8 items-center justify-center rounded-full bg-[#7989ff] p-1 text-text-primary shadow-[0_0_0_1px_rgba(240,246,252,0.1)]"
                 aria-hidden="true"
               >
                 <UserIcon />
               </div>
             ) : (
               <img
-                className="rounded-full"
+                className="h-8 w-8 rounded-full object-cover"
                 src={(user?.avatar ?? '') || avatarSrc}
                 alt={`${user?.name || user?.username || user?.email || ''}'s avatar`}
               />
             )}
           </div>
         </div>
-        <div
-          className="mt-2 grow overflow-hidden text-ellipsis whitespace-nowrap text-left text-text-primary"
-          style={{ marginTop: '0', marginLeft: '0' }}
-        >
+        <div className="grow overflow-hidden text-ellipsis whitespace-nowrap text-left text-text-primary">
           {user?.name ?? user?.username ?? localize('com_nav_user')}
         </div>
       </Select.Select>
-      <Select.SelectPopover
-        className="popover-ui w-[235px]"
-        style={{
-          transformOrigin: 'bottom',
-          marginRight: '0px',
-          translate: '0px',
-        }}
-      >
+      <Select.SelectPopover className="popover-ui w-[14.6875rem] origin-bottom">
         <div className="text-token-text-secondary ml-3 mr-2 py-2 text-sm" role="note">
           {user?.email ?? localize('com_nav_user')}
         </div>
@@ -78,13 +62,13 @@ function AccountSettings() {
         {startupConfig?.balance?.enabled === true &&
           balanceQuery.data != null &&
           !isNaN(parseFloat(balanceQuery.data)) && (
-          <>
-            <div className="text-token-text-secondary ml-3 mr-2 py-2 text-sm" role="note">
-              {localize('com_nav_balance')}: {parseFloat(balanceQuery.data).toFixed(2)}
-            </div>
-            <DropdownMenuSeparator />
-          </>
-        )}
+            <>
+              <div className="text-token-text-secondary ml-3 mr-2 py-2 text-sm" role="note">
+                {localize('com_nav_balance')}: {parseFloat(balanceQuery.data).toFixed(2)}
+              </div>
+              <DropdownMenuSeparator />
+            </>
+          )}
         <Select.SelectItem
           value=""
           onClick={() => setShowFiles(true)}
@@ -106,6 +90,7 @@ function AccountSettings() {
         <Select.SelectItem
           value=""
           onClick={() => setShowSettings(true)}
+          data-testid="nav-settings"
           className="select-item text-sm"
         >
           <GearIcon className="icon-md" aria-hidden="true" />
